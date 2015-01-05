@@ -19,10 +19,10 @@ public class Main {
 
 }
 class  Window{
-    int boxSize = 50;
-    int[][] borders = {{0,0},{1,0},{2,0},{3,0},{4,0},{0,1},{0,2},{0,3},{0,4},{1,4},{2,4},{3,4},{4,4},{4,1},{4,2},{4,3}};
-    int border_Number = 16;
-    int[][] boxs = {{1,1},{2,2}};
+    int boxSize = 30;
+    int[][] borders = {{0,0},{1,0},{2,0},{3,0},{4,0},{5,0},{0,1},{0,2},{0,3},{0,4},{0,5},{1,5},{2,5},{3,5},{4,5},{5,5},{5,1},{5,2},{5,3},{5,4}};
+    int border_Number = 20;
+    int[][] boxs = {{2,3},{2,2}};
     int box_Number = 2;
     int[] nowLocation = {1,2};
     Board mainBoard;
@@ -53,87 +53,119 @@ class  Window{
             }
             g2.setPaint(Color.YELLOW);
             for(int i=0;i<box_Number;i++){
-                Rectangle2D toDraw = new Rectangle2D.Double(a.getX()*boxSize,a.getY()*boxSize,boxSize,boxSize);
+                Rectangle2D toDraw = new Rectangle2D.Double(boxs[i][0]*boxSize,boxs[i][1]*boxSize,boxSize,boxSize);
                 g2.fill(toDraw);
             }
             g2.setPaint(Color.GREEN);
-            Rectangle2D toDraw = new Rectangle2D.Double(nowLocation.getX()*boxSize,nowLocation.getY()*boxSize,boxSize,boxSize);
+            Rectangle2D toDraw = new Rectangle2D.Double(nowLocation[0]*boxSize,nowLocation[1]*boxSize,boxSize,boxSize);
             g2.fill(toDraw);
         }
     }
     class KeyHandler extends KeyAdapter {
         public void keyPressed(KeyEvent event){
-            switch(event.getKeyCode()){
+out:        switch(event.getKeyCode()){
                 case 37:
-                    Location movingLeftTo = new Location(nowLocation.getX()-1,nowLocation.getY());
-                    if(borders.contains(movingLeftTo))
-                        break;
-                    if(boxs.contains(movingLeftTo)){
-                        Location boxMovingLeftTo = new Location(movingLeftTo.getX()-1,movingLeftTo.getY());
-                        if(borders.contains(boxMovingLeftTo))
-                            break;
-                        if(boxs.contains(boxMovingLeftTo))
-                            break;
-                        boxs.remove(movingLeftTo);
-                        boxs.add(boxMovingLeftTo);
-                        nowLocation.moveLeft();
-                        break;
+                    int[] movingLeftTo = {nowLocation[0]-1,nowLocation[1]};
+                    for(int i=0;i<border_Number;i++){
+                        if(borders[i][0]==movingLeftTo[0]&&borders[i][1]==movingLeftTo[1])
+                            break out;
                     }
-                    nowLocation.moveLeft();
+                    for(int i=0;i<box_Number;i++){
+                        if(boxs[i][0]==movingLeftTo[0]&&boxs[i][1]==movingLeftTo[1]){
+                            int[] boxMovingLeftTo = {movingLeftTo[0]-1,movingLeftTo[1]};
+                            for(int j=0;j<border_Number;j++){
+                                if(borders[j][0]==boxMovingLeftTo[0]&&borders[j][1]==boxMovingLeftTo[1])
+                                    break out;
+                            }
+                            for(int j=0;j<box_Number;j++){
+                                if(boxs[j][0]==boxMovingLeftTo[0]&&boxs[j][1]==boxMovingLeftTo[1])
+                                    break out;
+                            }
+                            boxs[i][0]--;
+                            nowLocation[0]--;
+                            mainBoard.repaint();
+                            break out;
+                        }
+                    }
+                    nowLocation[0]--;
                     mainBoard.repaint();
                     break;
                 case 38:
-                    Location movingUpTo = new Location(nowLocation.getX(),nowLocation.getY()-1);
-                    if(borders.contains(movingUpTo))
-                        break;
-                    if(boxs.contains(movingUpTo)){
-                        Location boxMovingUpTo = new Location(movingUpTo.getX(),movingUpTo.getY()-1);
-                        if(borders.contains(boxMovingUpTo))
-                            break;
-                        if(boxs.contains(boxMovingUpTo))
-                            break;
-                        boxs.remove(movingUpTo);
-                        boxs.add(boxMovingUpTo);
-                        nowLocation.moveUp();
-                        break;
+                    int[] movingUpTo = {nowLocation[0],nowLocation[1]-1};
+                    for(int i=0;i<border_Number;i++){
+                        if(borders[i][0]==movingUpTo[0]&&borders[i][1]==movingUpTo[1])
+                            break out;
                     }
-                    nowLocation.moveUp();
+                    for(int i=0;i<box_Number;i++){
+                        if(boxs[i][0]==movingUpTo[0]&&boxs[i][1]==movingUpTo[1]){
+                            int[] boxMovingUpTo = {movingUpTo[0],movingUpTo[1]-1};
+                            for(int j=0;j<border_Number;j++){
+                                if(borders[j][0]==boxMovingUpTo[0]&&borders[j][1]==boxMovingUpTo[1])
+                                    break out;
+                            }
+                            for(int j=0;j<box_Number;j++){
+                                if(boxs[j][0]==boxMovingUpTo[0]&&boxs[j][1]==boxMovingUpTo[1])
+                                    break out;
+                            }
+                            boxs[i][1]--;
+                            nowLocation[1]--;
+                            mainBoard.repaint();
+                            break out;
+                        }
+                    }
+                    nowLocation[1]--;
                     mainBoard.repaint();
                     break;
                 case 39:
-                    Location movingRightTo = new Location(nowLocation.getX()+1,nowLocation.getY());
-                    if(borders.contains(movingRightTo))
-                        break;
-                    if(boxs.contains(movingRightTo)){
-                        Location boxMovingRightTo = new Location(movingRightTo.getX()+1,movingRightTo.getY());
-                        if(borders.contains(boxMovingRightTo))
-                            break;
-                        if(boxs.contains(boxMovingRightTo))
-                            break;
-                        boxs.remove(movingRightTo);
-                        boxs.add(boxMovingRightTo);
-                        nowLocation.moveRight();
-                        break;
+                    int[] movingRightTo = {nowLocation[0]+1,nowLocation[1]};
+                    for(int i=0;i<border_Number;i++){
+                        if(borders[i][0]==movingRightTo[0]&&borders[i][1]==movingRightTo[1])
+                            break out;
                     }
-                    nowLocation.moveRight();
+                    for(int i=0;i<box_Number;i++){
+                        if(boxs[i][0]==movingRightTo[0]&&boxs[i][1]==movingRightTo[1]){
+                            int[] boxMovingRightTo = {movingRightTo[0]+1,movingRightTo[1]};
+                            for(int j=0;j<border_Number;j++){
+                                if(borders[j][0]==boxMovingRightTo[0]&&borders[j][1]==boxMovingRightTo[1])
+                                    break out;
+                            }
+                            for(int j=0;j<box_Number;j++){
+                                if(boxs[j][0]==boxMovingRightTo[0]&&boxs[j][1]==boxMovingRightTo[1])
+                                    break out;
+                            }
+                            boxs[i][0]++;
+                            nowLocation[0]++;
+                            mainBoard.repaint();
+                            break out;
+                        }
+                    }
+                    nowLocation[0]++;
                     mainBoard.repaint();
                     break;
                 case 40:
-                    Location movingDownTo = new Location(nowLocation.getX(),nowLocation.getY()+1);
-                    if(borders.contains(movingDownTo))
-                        break;
-                    if(boxs.contains(movingDownTo)){
-                        Location boxMovingDownTo = new Location(movingDownTo.getX(),movingDownTo.getY()+1);
-                        if(borders.contains(boxMovingDownTo))
-                            break;
-                        if(boxs.contains(boxMovingDownTo))
-                            break;
-                        boxs.remove(movingDownTo);
-                        boxs.add(boxMovingDownTo);
-                        nowLocation.moveDown();
-                        break;
+                    int[] movingDownTo = {nowLocation[0],nowLocation[1]+1};
+                    for(int i=0;i<border_Number;i++){
+                        if(borders[i][0]==movingDownTo[0]&&borders[i][1]==movingDownTo[1])
+                            break out;
                     }
-                    nowLocation.moveDown();
+                    for(int i=0;i<box_Number;i++){
+                        if(boxs[i][0]==movingDownTo[0]&&boxs[i][1]==movingDownTo[1]){
+                            int[] boxMovingDownTo = {movingDownTo[0],movingDownTo[1]+1};
+                            for(int j=0;j<border_Number;j++){
+                                if(borders[j][0]==boxMovingDownTo[0]&&borders[j][1]==boxMovingDownTo[1])
+                                    break out;
+                            }
+                            for(int j=0;j<box_Number;j++){
+                                if(boxs[j][0]==boxMovingDownTo[0]&&boxs[j][1]==boxMovingDownTo[1])
+                                    break out;
+                            }
+                            boxs[i][1]++;
+                            nowLocation[1]++;
+                            mainBoard.repaint();
+                            break out;
+                        }
+                    }
+                    nowLocation[1]++;
                     mainBoard.repaint();
                     break;
                 default:
