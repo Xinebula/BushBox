@@ -34,6 +34,7 @@ class  Window{
 
     int[] nowLocation = inputLocation.clone();
     Board mainBoard;
+    JFrame frame;
     BufferedImage player;
     BufferedImage border;
     BufferedImage box;
@@ -64,7 +65,7 @@ class  Window{
             e.printStackTrace();
         }
 
-        JFrame frame = new JFrame("Hello Swing");
+        frame = new JFrame("Hello Swing");
         mainBoard = new Board();
         frame.add(mainBoard);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -76,12 +77,18 @@ class  Window{
         frame.getContentPane().setBackground(Color.LIGHT_GRAY);
         KeyHandler key = new KeyHandler();
         frame.addKeyListener(key);
+        frame.setFocusable(true);
         frame.setVisible(true);
     }
 
     class Board extends JComponent {
         public void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g;
+            JButton restart = new JButton("Restart");
+            restart.setBounds(450,20,100,50);
+            SetRestart aRestart = new SetRestart();
+            restart.addActionListener(aRestart);
+            this.add(restart);
             for(int i=0;i<border_Number;i++){
                 g2.drawImage(border,borders[i][0]*boxSize,borders[i][1]*boxSize,boxSize,boxSize,null);
             }
@@ -268,6 +275,28 @@ out:        switch(event.getKeyCode()){
         Icon img = new ImageIcon("win.png");
         JOptionPane option = new JOptionPane();
         option.showConfirmDialog(mainBoard,"You Win!  Go to next level?","You Win",2,3,img);
+    }
+
+    class SetRestart implements ActionListener{
+        public void actionPerformed(ActionEvent event){
+            for(int i=0;i<box_Number;i++) {
+                for (int j = 0; j < 3; j++) {
+                    boxs[i][j] =inputBoxs[i][j];
+                }
+            }
+            for(int i=0;i<box_Number;i++){
+                boxs[i][2]=0;
+                for(int j=0;j<box_Number;j++){
+                    if(boxs[i][0]==aims[j][0]&&boxs[i][1]==aims[j][1]){
+                        boxs[i][2]=1;
+                        break;
+                    }
+                }
+            }
+            nowLocation = inputLocation.clone();
+            mainBoard.repaint();
+            frame.requestFocus();
+        }
     }
 }
 
