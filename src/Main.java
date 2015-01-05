@@ -3,7 +3,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -26,11 +25,14 @@ class  Window{
     //input the puzzle below
     int[][] borders = {{1,0},{2,0},{3,0},{4,0},{5,0},{1,1},{5,1},{6,1},{7,1},{0,2},{1,2},{3,2},{7,2},{0,3},{7,3},{0,4},{6,4},{7,4},{0,5},{1,5},{2,5},{4,5},{6,5},{2,6},{6,6},{2,7},{3,7},{4,7},{5,7},{6,7}};
     int border_Number = 30;
-    int[][] boxs = {{4,2,0},{2,3,0},{3,4,0},{4,4,0}};
+    int[][] inputBoxs= {{4,2,0},{2,3,0},{3,4,0},{4,4,0}};
     //The Third number indicates whether the box is in aim area (default=0)
     int box_Number = 4;
     int[][] aims = {{2,3},{3,3},{5,3},{5,5}};
-    int[] nowLocation = {3,1};
+    int[] inputLocation = {3,1};
+    int[][] boxs = new int[box_Number][3];
+
+    int[] nowLocation = inputLocation.clone();
     Board mainBoard;
     BufferedImage player;
     BufferedImage border;
@@ -38,6 +40,11 @@ class  Window{
     BufferedImage finishedBox;
     BufferedImage aim;
     public Window() {
+        for(int i=0;i<box_Number;i++) {
+            for (int j = 0; j < 3; j++) {
+                boxs[i][j] =inputBoxs[i][j];
+            }
+        }
         for(int i=0;i<box_Number;i++){
             boxs[i][2]=0;
             for(int j=0;j<box_Number;j++){
@@ -62,7 +69,7 @@ class  Window{
         frame.add(mainBoard);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        frame.setBounds(env.getCenterPoint().x - 300, env.getCenterPoint().y - 200, 600, 400);
+        frame.setBounds(env.getCenterPoint().x - 300, env.getCenterPoint().y - 250, 600, 500);
         Image img = new ImageIcon("icon.gif").getImage();
         frame.setIconImage(img);
         frame.setTitle("PushBox");
@@ -229,6 +236,25 @@ out:        switch(event.getKeyCode()){
                     nowLocation[1]++;
                     mainBoard.repaint();
                     break;
+                case 82:
+                    for(int i=0;i<box_Number;i++) {
+                        for (int j = 0; j < 3; j++) {
+                            boxs[i][j] =inputBoxs[i][j];
+                        }
+                    }
+                    for(int i=0;i<box_Number;i++){
+                        boxs[i][2]=0;
+                        for(int j=0;j<box_Number;j++){
+                            if(boxs[i][0]==aims[j][0]&&boxs[i][1]==aims[j][1]){
+                                boxs[i][2]=1;
+                                break;
+                            }
+                        }
+                    }
+                    nowLocation = inputLocation.clone();
+                    mainBoard.repaint();
+                    break;
+
                 default:
                     break;
 
