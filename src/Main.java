@@ -77,7 +77,6 @@ class  Window{
             g2.setPaint(Color.GREEN);
             Rectangle2D toDraw = new Rectangle2D.Double(nowLocation[0]*boxSize,nowLocation[1]*boxSize,boxSize,boxSize);
             g2.fill(toDraw);
-            judge();
         }
     }
     class KeyHandler extends KeyAdapter {
@@ -110,6 +109,7 @@ out:        switch(event.getKeyCode()){
                                 }
                             }
                             mainBoard.repaint();
+                            judge();
                             break out;
                         }
                     }
@@ -143,6 +143,7 @@ out:        switch(event.getKeyCode()){
                                 }
                             }
                             mainBoard.repaint();
+                            judge();
                             break out;
                         }
                     }
@@ -176,6 +177,7 @@ out:        switch(event.getKeyCode()){
                                 }
                             }
                             mainBoard.repaint();
+                            judge();
                             break out;
                         }
                     }
@@ -209,6 +211,7 @@ out:        switch(event.getKeyCode()){
                                 }
                             }
                             mainBoard.repaint();
+                            judge();
                             break out;
                         }
                     }
@@ -225,7 +228,10 @@ out:        switch(event.getKeyCode()){
         for(int i=0;i<box_Number;i++)
             if(boxs[i][2]==0)
                 return;
-        System.exit(0);
+        Icon img = new ImageIcon("win.png");
+        JOptionPane option = new JOptionPane();
+        option.showConfirmDialog(mainBoard,"You Win!  Go to next level?","You Win",2,3,img);
+//        System.exit(0);
     }
 }
 
