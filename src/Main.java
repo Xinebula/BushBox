@@ -36,6 +36,7 @@ class  Window{
     BufferedImage border;
     BufferedImage box;
     BufferedImage finishedBox;
+    BufferedImage aim;
     public Window() {
         for(int i=0;i<box_Number;i++){
             boxs[i][2]=0;
@@ -51,6 +52,7 @@ class  Window{
             border = ImageIO.read(new File("border.png"));
             box = ImageIO.read(new File("box.png"));
             finishedBox = ImageIO.read(new File("finishedBox.png"));
+            aim = ImageIO.read(new File("aim.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -73,14 +75,11 @@ class  Window{
     class Board extends JComponent {
         public void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g;
-            g2.setPaint(Color.RED);
             for(int i=0;i<border_Number;i++){
                 g2.drawImage(border,borders[i][0]*boxSize,borders[i][1]*boxSize,boxSize,boxSize,null);
             }
-            g2.setPaint(Color.PINK);
             for(int i=0;i<box_Number;i++){
-                Rectangle2D toDraw = new Rectangle2D.Double(aims[i][0]*boxSize,aims[i][1]*boxSize,boxSize,boxSize);
-                g2.fill(toDraw);
+                g2.drawImage(aim,aims[i][0]*boxSize,aims[i][1]*boxSize,boxSize,boxSize,null);
             }
             for(int i=0;i<box_Number;i++){
                 if(boxs[i][2]==0)
