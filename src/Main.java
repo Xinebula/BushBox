@@ -20,15 +20,25 @@ public class Main {
 }
 class  Window{
     int boxSize = 30;
+    //input the puzzle below
     int[][] borders = {{0,0},{1,0},{2,0},{3,0},{4,0},{5,0},{0,1},{0,2},{0,3},{0,4},{0,5},{1,5},{2,5},{3,5},{4,5},{5,5},{5,1},{5,2},{5,3},{5,4}};
     int border_Number = 20;
-    int[][] boxs = {{2,3},{2,2}};
+    int[][] boxs = {{2,3,0},{2,2,0}};
+    //The Third number indicates whether the box is in aim area (default=0)
     int box_Number = 2;
     int[][] aims = {{3,3},{3,2}};
     int[] nowLocation = {1,2};
     Board mainBoard;
-    public Window()
-    {
+    public Window() {
+        for(int i=0;i<box_Number;i++){
+            boxs[i][2]=0;
+            for(int j=0;j<box_Number;j++){
+                if(boxs[i][0]==aims[j][0]&&boxs[i][1]==aims[j][1]){
+                    boxs[i][2]=1;
+                    break;
+                }
+            }
+        }
         JFrame frame = new JFrame("Hello Swing");
         mainBoard = new Board();
         frame.add(mainBoard);
@@ -57,19 +67,18 @@ class  Window{
                 Rectangle2D toDraw = new Rectangle2D.Double(aims[i][0]*boxSize,aims[i][1]*boxSize,boxSize,boxSize);
                 g2.fill(toDraw);
             }
-            g2.setPaint(Color.BLUE);
             for(int i=0;i<box_Number;i++){
-                Rectangle2D toDraw = new Rectangle2D.Double(aims[i][0]*boxSize-1,aims[i][1]*boxSize-1,boxSize+1,boxSize+1);
-                g2.draw(toDraw);
-            }
-            g2.setPaint(Color.YELLOW);
-            for(int i=0;i<box_Number;i++){
+                if(boxs[i][2]==0)
+                    g2.setPaint(Color.YELLOW);
+                else
+                    g2.setPaint(Color.CYAN);
                 Rectangle2D toDraw = new Rectangle2D.Double(boxs[i][0]*boxSize,boxs[i][1]*boxSize,boxSize,boxSize);
                 g2.fill(toDraw);
             }
             g2.setPaint(Color.GREEN);
             Rectangle2D toDraw = new Rectangle2D.Double(nowLocation[0]*boxSize,nowLocation[1]*boxSize,boxSize,boxSize);
             g2.fill(toDraw);
+            judge();
         }
     }
     class KeyHandler extends KeyAdapter {
@@ -94,6 +103,13 @@ out:        switch(event.getKeyCode()){
                             }
                             boxs[i][0]--;
                             nowLocation[0]--;
+                            boxs[i][2]=0;
+                            for(int j=0;j<box_Number;j++){
+                                if(boxs[i][0]==aims[j][0]&&boxs[i][1]==aims[j][1]){
+                                    boxs[i][2]=1;
+                                    break;
+                                }
+                            }
                             mainBoard.repaint();
                             break out;
                         }
@@ -120,6 +136,13 @@ out:        switch(event.getKeyCode()){
                             }
                             boxs[i][1]--;
                             nowLocation[1]--;
+                            boxs[i][2]=0;
+                            for(int j=0;j<box_Number;j++){
+                                if(boxs[i][0]==aims[j][0]&&boxs[i][1]==aims[j][1]){
+                                    boxs[i][2]=1;
+                                    break;
+                                }
+                            }
                             mainBoard.repaint();
                             break out;
                         }
@@ -146,6 +169,13 @@ out:        switch(event.getKeyCode()){
                             }
                             boxs[i][0]++;
                             nowLocation[0]++;
+                            boxs[i][2]=0;
+                            for(int j=0;j<box_Number;j++){
+                                if(boxs[i][0]==aims[j][0]&&boxs[i][1]==aims[j][1]){
+                                    boxs[i][2]=1;
+                                    break;
+                                }
+                            }
                             mainBoard.repaint();
                             break out;
                         }
@@ -172,6 +202,13 @@ out:        switch(event.getKeyCode()){
                             }
                             boxs[i][1]++;
                             nowLocation[1]++;
+                            boxs[i][2]=0;
+                            for(int j=0;j<box_Number;j++){
+                                if(boxs[i][0]==aims[j][0]&&boxs[i][1]==aims[j][1]){
+                                    boxs[i][2]=1;
+                                    break;
+                                }
+                            }
                             mainBoard.repaint();
                             break out;
                         }
@@ -184,6 +221,12 @@ out:        switch(event.getKeyCode()){
 
             }
         }
+    }
+    public void judge(){
+        for(int i=0;i<box_Number;i++)
+            if(boxs[i][2]==0)
+                return;
+        System.exit(0);
     }
 }
 
