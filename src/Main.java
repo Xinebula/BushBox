@@ -24,15 +24,18 @@ public class Main {
 class  Window{
     int boxSize = 50;
     //input the puzzle below
-    int[][] borders = {{0,2},{0,3},{0,4},{1,2},{1,4},{2,0},{2,1},{2,2},{2,4},{3,0},{3,4},{4,0},{4,2},{4,4},{4,5},{4,6},{5,0},{5,6},{6,0},{6,1},{6,2},{6,4},{6,6},{7,2},{7,6},{8,2},{8,3},{8,4},{8,5},{8,6}};
+    int[][] borders = {{1,0},{2,0},{3,0},{4,0},{5,0},{1,1},{5,1},{6,1},{7,1},{0,2},{1,2},{3,2},{7,2},{0,3},{7,3},{0,4},{6,4},{7,4},{0,5},{1,5},{2,5},{4,5},{6,5},{2,6},{6,6},{2,7},{3,7},{4,7},{5,7},{6,7}};
     int border_Number = 30;
-    int[][] boxs = {{5,3,0},{3,2,0}};
+    int[][] boxs = {{4,2,0},{2,3,0},{3,4,0},{4,4,0}};
     //The Third number indicates whether the box is in aim area (default=0)
-    int box_Number = 2;
-    int[][] aims = {{1,3},{2,3}};
-    int[] nowLocation = {2,3};
+    int box_Number = 4;
+    int[][] aims = {{2,3},{3,3},{5,3},{5,5}};
+    int[] nowLocation = {3,1};
     Board mainBoard;
     BufferedImage player;
+    BufferedImage border;
+    BufferedImage box;
+    BufferedImage finishedBox;
     public Window() {
         for(int i=0;i<box_Number;i++){
             boxs[i][2]=0;
@@ -45,9 +48,13 @@ class  Window{
         }
         try {
             player = ImageIO.read(new File("player.png"));
+            border = ImageIO.read(new File("border.png"));
+            box = ImageIO.read(new File("box.png"));
+            finishedBox = ImageIO.read(new File("finishedBox.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         JFrame frame = new JFrame("Hello Swing");
         mainBoard = new Board();
         frame.add(mainBoard);
@@ -68,8 +75,7 @@ class  Window{
             Graphics2D g2 = (Graphics2D) g;
             g2.setPaint(Color.RED);
             for(int i=0;i<border_Number;i++){
-                Rectangle2D toDraw = new Rectangle2D.Double(borders[i][0]*boxSize,borders[i][1]*boxSize,boxSize,boxSize);
-                g2.fill(toDraw);
+                g2.drawImage(border,borders[i][0]*boxSize,borders[i][1]*boxSize,boxSize,boxSize,null);
             }
             g2.setPaint(Color.PINK);
             for(int i=0;i<box_Number;i++){
@@ -78,11 +84,9 @@ class  Window{
             }
             for(int i=0;i<box_Number;i++){
                 if(boxs[i][2]==0)
-                    g2.setPaint(Color.YELLOW);
+                    g2.drawImage(box, boxs[i][0] * boxSize, boxs[i][1] * boxSize, boxSize, boxSize, null);
                 else
-                    g2.setPaint(Color.CYAN);
-                Rectangle2D toDraw = new Rectangle2D.Double(boxs[i][0]*boxSize,boxs[i][1]*boxSize,boxSize,boxSize);
-                g2.fill(toDraw);
+                    g2.drawImage(finishedBox, boxs[i][0] * boxSize,boxs[i][1]*boxSize,boxSize,boxSize,null);
             }
             g2.drawImage(player,nowLocation[0]*boxSize,nowLocation[1]*boxSize,boxSize,boxSize,null);
         }
