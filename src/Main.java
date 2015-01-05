@@ -24,6 +24,7 @@ class  Window{
     int border_Number = 20;
     int[][] boxs = {{2,3},{2,2}};
     int box_Number = 2;
+    int[][] aims = {{3,3},{3,2}};
     int[] nowLocation = {1,2};
     Board mainBoard;
     public Window()
@@ -50,6 +51,16 @@ class  Window{
             for(int i=0;i<border_Number;i++){
                 Rectangle2D toDraw = new Rectangle2D.Double(borders[i][0]*boxSize,borders[i][1]*boxSize,boxSize,boxSize);
                 g2.fill(toDraw);
+            }
+            g2.setPaint(Color.PINK);
+            for(int i=0;i<box_Number;i++){
+                Rectangle2D toDraw = new Rectangle2D.Double(aims[i][0]*boxSize,aims[i][1]*boxSize,boxSize,boxSize);
+                g2.fill(toDraw);
+            }
+            g2.setPaint(Color.BLUE);
+            for(int i=0;i<box_Number;i++){
+                Rectangle2D toDraw = new Rectangle2D.Double(aims[i][0]*boxSize-1,aims[i][1]*boxSize-1,boxSize+1,boxSize+1);
+                g2.draw(toDraw);
             }
             g2.setPaint(Color.YELLOW);
             for(int i=0;i<box_Number;i++){
