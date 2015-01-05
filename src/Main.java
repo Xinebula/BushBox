@@ -1,8 +1,12 @@
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by xiny on 2015/1/5.
@@ -18,16 +22,17 @@ public class Main {
 
 }
 class  Window{
-    int boxSize = 30;
+    int boxSize = 50;
     //input the puzzle below
-    int[][] borders = {{0,0},{1,0},{2,0},{3,0},{4,0},{5,0},{0,1},{0,2},{0,3},{0,4},{0,5},{1,5},{2,5},{3,5},{4,5},{5,5},{5,1},{5,2},{5,3},{5,4}};
-    int border_Number = 20;
-    int[][] boxs = {{2,3,0},{2,2,0}};
+    int[][] borders = {{0,0},{0,1},{0,2},{0,3},{0,4},{1,0},{1,4},{2,0},{2,2},{2,4},{3,0},{3,4},{4,0},{4,2},{4,4},{4,5},{4,6},{5,0},{5,6},{6,0},{6,1},{6,2},{6,4},{6,6},{7,2},{7,6},{8,2},{8,3},{8,4},{8,5},{8,6}};
+    int border_Number = 31;
+    int[][] boxs = {{3,3,0},{3,2,0}};
     //The Third number indicates whether the box is in aim area (default=0)
     int box_Number = 2;
-    int[][] aims = {{3,3},{3,2}};
-    int[] nowLocation = {1,2};
+    int[][] aims = {{1,3},{2,3}};
+    int[] nowLocation = {2,1};
     Board mainBoard;
+    BufferedImage player;
     public Window() {
         for(int i=0;i<box_Number;i++){
             boxs[i][2]=0;
@@ -37,6 +42,11 @@ class  Window{
                     break;
                 }
             }
+        }
+        try {
+            player = ImageIO.read(new File("player.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         JFrame frame = new JFrame("Hello Swing");
         mainBoard = new Board();
@@ -74,9 +84,7 @@ class  Window{
                 Rectangle2D toDraw = new Rectangle2D.Double(boxs[i][0]*boxSize,boxs[i][1]*boxSize,boxSize,boxSize);
                 g2.fill(toDraw);
             }
-            g2.setPaint(Color.GREEN);
-            Rectangle2D toDraw = new Rectangle2D.Double(nowLocation[0]*boxSize,nowLocation[1]*boxSize,boxSize,boxSize);
-            g2.fill(toDraw);
+            g2.drawImage(player,nowLocation[0]*boxSize,nowLocation[1]*boxSize,boxSize,boxSize,null);
         }
     }
     class KeyHandler extends KeyAdapter {
@@ -231,7 +239,6 @@ out:        switch(event.getKeyCode()){
         Icon img = new ImageIcon("win.png");
         JOptionPane option = new JOptionPane();
         option.showConfirmDialog(mainBoard,"You Win!  Go to next level?","You Win",2,3,img);
-//        System.exit(0);
     }
 }
 
